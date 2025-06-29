@@ -1,0 +1,105 @@
++-------------------+
+|   User            |
++-------------------+
+| user_id (PK)      |
+| first_name        |
+| last_name         |
+| email (UNIQUE)    |
+| password_hash     |
+| phone_number      |
+| role (ENUM)       |
+| created_at        |
++-------------------+
+
++--------------------------+
+|        Property          |
++--------------------------+
+| property_id (PK, UUID)   |
+| host_id (FK → User)      |
+| name (VARCHAR, NOT NULL) |
+| description (TEXT, NOT NULL) |
+| location (VARCHAR, NOT NULL) |
+| pricepernight (DECIMAL, NOT NULL) |
+| created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) |
+| updated_at (TIMESTAMP, ON UPDATE CURRENT_TIMESTAMP) |
++--------------------------+
+
+key
+
+host_id: References User.user_id — host who owns the property
+
+
+
+ Booking Entity
+
++-----------------------------+
+|          Booking            |
++-----------------------------+
+| booking_id (PK, UUID)       |
+| property_id (FK → Property) |
+| user_id (FK → User)         |
+| start_date (DATE, NOT NULL) |
+| end_date (DATE, NOT NULL)   |
+| total_price (DECIMAL, NOT NULL) |
+| status (ENUM: pending, confirmed, canceled) |
+| created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) |
++-----------------------------+
+
+Each booking links a user to a property
+
+status must be one of the 3 valid values
+
+
+
+ Payment Entity
+
++-------------------------------------+
+|              Payment                |
++-------------------------------------+
+| payment_id (PK, UUID)               |
+| booking_id (FK → Booking)           |
+| amount (DECIMAL, NOT NULL)          |
+| payment_date (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) |
+| payment_method (ENUM: credit_card, paypal, stripe) |
++-------------------------------------+
+
+Every payment is linked to one booking (1:1)
+
+payment_method is restricted to accepted methods
+
+
+
+ Review Entity
+
++-------------------------------+
+|           Review             |
++-------------------------------+
+| review_id (PK, UUID)          |
+| property_id (FK → Property)   |
+| user_id (FK → User)           |
+| rating (INTEGER, 1-5 ONLY)    |
+| comment (TEXT, NOT NULL)      |
+| created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) |
++-------------------------------+
+
+A user leaves a review for a property
+
+rating must be between 1 and 5
+
+
+
+ Message Entity
+
++-------------------------------+
+|           Message             |
++-------------------------------+
+| message_id (PK, UUID)         |
+| sender_id (FK → User)         |
+| recipient_id (FK → User)      |
+| message_body (TEXT, NOT NULL) |
+| sent_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) |
++-------------------------------+
+
+A user can send messages to another user
+
+Both sender_id and recipient_id reference the same User table
