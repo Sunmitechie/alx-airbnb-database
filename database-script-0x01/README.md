@@ -1,20 +1,26 @@
-# Airbnb Clone – Sample Data Seeder
+# Airbnb Clone – Database Schema
 
-This script populates the database with sample data for testing and development.
+This directory contains the SQL DDL script (`schema.sql`) that defines the relational database schema for the backend of the Airbnb Clone project.
 
-## Entities Seeded
+## Tables Defined
 
-- `users`: Sample host and guest accounts
-- `properties`: Listings created by a host
-- `bookings`: Guest bookings for properties
-- `payments`: Linked to bookings
-- `reviews`: Left by guests
-- `messages`: Between users
+- `users`: Stores all platform users (guests, hosts, admins).
+- `properties`: Listings created by hosts.
+- `bookings`: Reservations made by guests for properties.
+- `payments`: Linked to bookings for handling payment transactions.
+- `reviews`: Feedback from users on properties.
+- `messages`: Internal messaging between users.
 
-## Usage
+## Features
 
-Run the script after the schema is created:
+- All entities use UUID primary keys.
+- Proper indexing on frequently queried columns.
+- Enforced referential integrity via foreign keys.
+- ENUM-like constraints using `CHECK`.
 
+## How to Use
+
+To create the database schema:
 ```sql
+-- In your SQL console:
 \i schema.sql
-\i seed.sql
