@@ -1,4 +1,22 @@
--- Optimized query selecting only needed columns
+-- Initial complex query with WHERE and AND (unoptimized)
+SELECT *
+FROM bookings
+JOIN users ON bookings.user_id = users.id
+JOIN properties ON bookings.property_id = properties.id
+JOIN payments ON bookings.payment_id = payments.id
+WHERE users.country = 'Nigeria' AND bookings.created_at >= '2024-01-01';
+
+-- EXPLAIN analysis for unoptimized query
+EXPLAIN
+SELECT *
+FROM bookings
+JOIN users ON bookings.user_id = users.id
+JOIN properties ON bookings.property_id = properties.id
+JOIN payments ON bookings.payment_id = payments.id
+WHERE users.country = 'Nigeria' AND bookings.created_at >= '2024-01-01';
+
+
+-- Optimized version: select specific columns
 SELECT
   bookings.id AS booking_id,
   users.name AS user_name,
@@ -8,9 +26,10 @@ SELECT
 FROM bookings
 JOIN users ON bookings.user_id = users.id
 JOIN properties ON bookings.property_id = properties.id
-JOIN payments ON bookings.payment_id = payments.id;
+JOIN payments ON bookings.payment_id = payments.id
+WHERE users.country = 'Nigeria' AND bookings.created_at >= '2024-01-01';
 
--- Analyze the performance of the optimized query
+-- EXPLAIN analysis for optimized query
 EXPLAIN
 SELECT
   bookings.id AS booking_id,
@@ -21,4 +40,8 @@ SELECT
 FROM bookings
 JOIN users ON bookings.user_id = users.id
 JOIN properties ON bookings.property_id = properties.id
-JOIN payments ON bookings.payment_id = payments.id;
+JOIN payments ON bookings.payment_id = payments.id
+WHERE users.country = 'Nigeria' AND bookings.created_at >= '2024-01-01';
+
+
+
